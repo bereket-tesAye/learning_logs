@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from .forms import TopicForm
+from .forms import EntryForm
 
 from django.shortcuts import render
 from .models import Topic

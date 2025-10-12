@@ -4,7 +4,7 @@ from django.urls import reverse
 from .forms import TopicForm
 from .forms import EntryForm
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Topic, Entry
 
 # Create your views here.
@@ -63,3 +63,20 @@ def edit_entry(request, entry_id):
         
     context = {'entry':entry, 'topic': topic, 'form':form }
     return render(request, 'learning_logs/edit_entry.html', context)
+    
+def edit_topic(request, topic_id):
+    """Edit an existing topic."""
+    topic = get_object_or_404(Topic, id=topic_id)
+
+    if request.method != 'POST':
+        # Initial request; pre-fill the form with the current topic.
+        form = TopicForm(instance=topic)
+    else:
+        # POST data submitted; process data.
+        form = TopicForm(instance=topic, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic.id]))
+
+    context = {'topic': topic, 'form': form}
+    return render(request, 'learning_logs/edit_topic.html', context)

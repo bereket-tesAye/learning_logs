@@ -10,7 +10,7 @@ class Topic(models.Model):
 
 class Entry(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    text = models.CharField()
+    text = models.CharField(max_length = 500)
     date_added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
